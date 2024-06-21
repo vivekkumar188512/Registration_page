@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dynamic disrtict and District selection</title>
+	<script src="states_districts.js"></script>
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"></head> -->
+<body>
+
+<div class="container p-3">
+    <div class="mb-3">
+        <label for="state" class="form-label">state</label>
+        <select id="state" class="form-select">
+            <option>select state</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="disrtict" class="form-label">disrtict</label>
+        <select id="disrtict" class="form-select">
+            <option>_</option>
+        </select>
+    </div>
+</div>
+
+<script>
+// user state code for selected option
+
+(() => {
+    // script https://www.html-code-generator.com/html/drop-down/disrtict-name
+
+    // Get the state name and disrtict name from the imported script.
+    const state_list = state_and_disrticts.state;
+    const disrtict_list = state_and_disrticts.disrticts;
+    
+    const id_disrtict_option = document.getElementById("disrtict");
+    const id_state_option = document.getElementById("state");
+
+    const create_state_selection = () => {
+        let option = '';
+        option += '<option value="">select state</option>';
+        for (const state_code in state_list) {
+            // set selected option user state
+            option += '<option value="' + state_code + '"' + '>' + state_list[state_code] + '</option>';
+        }
+        id_state_option.innerHTML = option;
+    };
+
+    const create_disrticts_selection = () => {
+        // selected state code
+        let selected_state_code = id_state_option.value;
+        // get disrtict names by selected state-code
+        let disrtict_names = disrtict_list[selected_state_code];
+
+        // if invalid state code
+        if (!disrtict_names) {
+            id_disrtict_option.innerHTML = '<option>select disrtict</option>';
+            return;
+        }
+        // create option
+        let option = '';
+        option += '<option>select disrtict</option>';
+        disrtict_names.forEach(disrtict => {
+            option += '<option value="' + disrtict.code + '">' + disrtict.name + '</option>';
+        });
+        id_disrtict_option.innerHTML = option;
+    };
+
+    // state select change event update disrtict code
+    id_state_option.addEventListener('change', create_disrticts_selection);
+
+    create_state_selection();
+    create_disrticts_selection();
+})();
+</script>
+</body>
+</html>
